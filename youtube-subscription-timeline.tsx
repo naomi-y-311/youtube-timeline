@@ -1,18 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { Video, LogIn, LogOut, RefreshCw, Play } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>YouTube Subscription Timeline</title>
+    <!-- React, Babel, Tailwind, Lucide を読み込み -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide-react@0.344.0/dist/lucide-react.umd.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900">
+    <div id="root"></div>
 
-const API_KEY = 'AIzaSyAQj9_bs47GFmHx4dhOM_DVwWhj0gT2ma0';
-const CLIENT_ID = '209571413251-6d0i4q3ud75boi9k874e1s0mhf4t53aa.apps.googleusercontent.com';
-const REDIRECT_URI = window.location.origin + window.location.pathname;
-const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
+    <script type="text/babel">
+      // ✅ importの代わり
+      const { useState, useEffect } = React;
+      const { Video, LogIn, LogOut, RefreshCw, Play } = lucideReact;
 
-export default function YouTubeSubscriptionTimeline() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
+      // ✅ ここからTSXコードを貼る
+      const API_KEY = 'AIzaSyAQj9_bs47GFmHx4dhOM_DVwWhj0gT2ma0';
+      const CLIENT_ID = '209571413251-6d0i4q3ud75boi9k874e1s0mhf4t53aa.apps.googleusercontent.com';
+      const REDIRECT_URI = window.location.origin + window.location.pathname;
+      const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
+
+      function YouTubeSubscriptionTimeline() {
+        const [isSignedIn, setIsSignedIn] = useState(false);
+        const [videos, setVideos] = useState([]);
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState(null);
+        const [selectedVideo, setSelectedVideo] = useState(null);
+        const [accessToken, setAccessToken] = useState(null);
 
   useEffect(() => {
     // Check for access token in URL hash (OAuth callback)
@@ -292,3 +310,9 @@ export default function YouTubeSubscriptionTimeline() {
     </div>
   );
 }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<YouTubeSubscriptionTimeline />);
+    </script>
+  </body>
+</html>

@@ -60,20 +60,43 @@ const YouTubeAPI = {
     return data.items.map(item => item.snippet.resourceId.channelId);
   },
 
-  /**
-   * チャンネルの最新動画を取得
-   * @param {string} channelId - チャンネルID
-   * @param {string} token - アクセストークン
-   * @returns {Promise<Array>} 動画データ配列
-   */
-  async fetchChannelVideos(channelId, token) {
+    /** ===============================
+   * チャンネルの「uploads playlist ID」を取得
+   * =============================== */
+  async fetchUploadsPlaylistId(channelId, token) {
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=${CONFIG.MAX_VIDEOS_PER_CHANNEL}`,
+      `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Channels API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.items?.[0]?.contentDetails?.relatedPlaylists?.uploads || null;
+  },
+
+  /** ===============================
+   * playlistItems.list で動画を取得（低クォータ版）
+   * =============================== */
+  
+  async fetchChannelVideos(channelId, token) {
+    // 1️⃣ アップロードプレイリストIDを取得
+    const uploadsId = await this.fetchUploadsPlaylistId(channelId, token);
+    if (!uploadsId) {
+      console.warn(`No uploads playlist for channel ${channelId}`);
+      return [];
+    }
+
+    // 2️⃣ プレイリストの動画を取得（最大50件中、設定分だけ）
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsId}&maxResults=${CONFIG.MAX_VIDEOS_PER_CHANNEL}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     
     if (!response.ok) {
-      throw new Error(`Videos API error: ${response.status}`);
+      throw new Error(`PlaylistItems API error: ${response.status}`);
     }
     
     const data = await response.json();
@@ -108,14 +131,15 @@ const YouTubeAPI = {
       }
     }
 
-    // 公開日時でソート（新しい順）
+    // すべてまとめて公開日でソートして上位10件を残す
     allVideos.sort(
       (a, b) => new Date(b.snippet.publishedAt) - new Date(a.snippet.publishedAt)
     );
 
-    // キャッシュに保存
-    this.setCache(allVideos);
+    const latest10 = allVideos.slice(0, 10);
 
-    return allVideos;
+    // キャッシュに保存
+    this.setCache(latest10);
+    return latest10;
   }
 };

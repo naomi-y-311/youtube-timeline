@@ -1,6 +1,5 @@
 // YouTube API設定
 const CONFIG = {
-  API_KEY: "AIzaSyDbZFuM6Kk7LkpTD3gXFCZAil784fdE6xA",
   CLIENT_ID: "652862433755-rm9f5j7ln9qgcebi7sptkvifle4k8a9v.apps.googleusercontent.com",
   REDIRECT_URI: window.location.origin + window.location.pathname,
   SCOPES: "https://www.googleapis.com/auth/youtube.readonly",

@@ -120,7 +120,7 @@ const YouTubeAPI = {
     
     // 各チャンネルの動画を取得
     const allVideos = [];
-    const targetChannels = channelIds.slice(0, CONFIG.MAX_CHANNELS);
+    const targetChannels = channelIds;
     
     for (const channelId of targetChannels) {
       try {

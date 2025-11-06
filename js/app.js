@@ -120,7 +120,10 @@ function YouTubeSubscriptionTimeline() {
               <VideoCard
                  key={videoId}
                  video={video}
-                 onClick={() => setSelectedVideo(videoId)}
+                 onClick={() => setSelectedVideo({
+                  id: videoId,
+                  snippet: video.snippet
+                })}
               />
             );
           })}

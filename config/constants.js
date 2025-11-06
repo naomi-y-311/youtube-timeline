@@ -6,7 +6,6 @@ const CONFIG = {
   SCOPES: "https://www.googleapis.com/auth/youtube.readonly",
   
   // API設定
-  MAX_CHANNELS: 5,        // 取得するチャンネル数
   MAX_VIDEOS_PER_CHANNEL: 3,  // チャンネルごとの動画数
   CACHE_DURATION: 30 * 60 * 1000,  // キャッシュ有効期限（30分）
   

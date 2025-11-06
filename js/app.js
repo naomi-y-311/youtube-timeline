@@ -110,15 +110,23 @@ function YouTubeSubscriptionTimeline() {
             />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {videos.map((video) => (
-                <VideoCard
-                  key={video.id.videoId}
-                  video={video}
-                  onClick={setSelectedVideo}
-                />
-              ))}
-            </div>
+             {videos.map((video) => {
+              // playlistItems.list の構造に対応
+              const videoId =
+                video.snippet?.resourceId?.videoId ||
+                video.id?.videoId ||
+                video.id;
+            return (
+              <VideoCard
+                 key={videoId}
+                 video={video}
+                 onClick={() => setSelectedVideo(videoId)}
+              />
+            );
+          })}
+          </div>
           )}
+  
 
           {!loading && !error && videos.length === 0 && (
             <div className="text-center py-12 text-gray-400">

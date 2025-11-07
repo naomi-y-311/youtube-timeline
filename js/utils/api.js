@@ -139,7 +139,7 @@ const YouTubeAPI = {
     const latest10 = allVideos.slice(0, 20);
 
     // キャッシュに保存
-    this.setCache(latest20);
-    return latest20;
+    this.setCache(latest10);
+    return latest10;
   }
 };

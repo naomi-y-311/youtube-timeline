@@ -131,15 +131,15 @@ const YouTubeAPI = {
       }
     }
 
-    // すべてまとめて公開日でソートして上位10件を残す
+    // すべてまとめて公開日でソートして上位20件を残す
     allVideos.sort(
       (a, b) => new Date(b.snippet.publishedAt) - new Date(a.snippet.publishedAt)
     );
 
-    const latest10 = allVideos.slice(0, 10);
+    const latest10 = allVideos.slice(0, 20);
 
     // キャッシュに保存
-    this.setCache(latest10);
-    return latest10;
+    this.setCache(latest20);
+    return latest20;
   }
 };
